@@ -1,0 +1,11 @@
+{
+  "name": "canvass-server",
+  "main": "src/server.js",
+  "version": "1.0.0",
+  "dependencies": {
+    "@types/sequelize": "^4.28.9",
+    "express": "^4.17.1",
+    "sequelize": "^6.6.2",
+    "sqlite3": "^5.0.2"
+  }
+}
