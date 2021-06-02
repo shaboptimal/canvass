@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import VoterEditor from './VoterEditor';
-import LoadStates from '../constants/Enums';
-import load from '../util/load';
+import { load, LoadStates } from '../util/load';
 
 const VoterEditorContainer = () => {
   const { id } = useParams();
@@ -11,7 +10,7 @@ const VoterEditorContainer = () => {
   const [loadState, setLoadState] = useState(LoadStates.IDLE);
   const [error, setError] = useState();
 
-  const upsertVoter = async () => {
+  const upload = () => {
     let method = 'POST';
     let path = '/api/voters';
     if (id) {
@@ -27,14 +26,14 @@ const VoterEditorContainer = () => {
     });
   };
 
-  const postUpsert = async (upserted) => {
+  const onSuccessfulUpload = (upserted) => {
     setVoter(upserted);
     if (!id) {
       history.push(`/voter/${upserted.uuid}`);
     }
   };
 
-  const submit = async () => load(upsertVoter, postUpsert, setLoadState, setError, true);
+  const submit = () => load(upload, onSuccessfulUpload, setLoadState, setError, true);
 
   const fetchVoter = () => {
     if (!id) {

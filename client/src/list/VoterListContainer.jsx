@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Loader, Message } from 'semantic-ui-react';
-import LoadStates from '../constants/Enums';
 import VoterList from './VoterList';
-import load from '../util/load';
+import { load, LoadStates } from '../util/load';
 
 const VoterListContainer = () => {
   const history = useHistory();
@@ -12,7 +11,7 @@ const VoterListContainer = () => {
   const [voters, setVoters] = useState([]);
   const [error, setError] = useState();
 
-  const fetchVoters = async () => load(
+  const fetchVoters = () => load(
     () => fetch('/api/voters'),
     setVoters,
     setLoadState,

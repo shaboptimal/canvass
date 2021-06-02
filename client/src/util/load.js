@@ -1,4 +1,9 @@
-import LoadStates from '../constants/Enums';
+const LoadStates = {
+  IDLE: 'IDLE',
+  LOADING: 'LOADING',
+  SAVED: 'SAVED',
+  ERROR: 'ERROR',
+};
 
 const load = async (
   retrieve, postProcess, setLoadState, setError, isSave,
@@ -13,7 +18,7 @@ const load = async (
     }
     const jsonBody = await response.json();
     postProcess(jsonBody);
-    setLoadState(isSave ? LoadStates.SAVED : LoadStates.IDLE);
+    setLoadState(isSave ? LoadStates.SAVED : LoadStates.ID);
   } catch (e) {
     console.error(e);
     setLoadState(LoadStates.ERROR);
@@ -21,4 +26,4 @@ const load = async (
   }
 };
 
-export default load;
+export { load, LoadStates };

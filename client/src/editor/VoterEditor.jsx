@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, Message } from 'semantic-ui-react';
-import LoadStates from '../constants/Enums';
+import { LoadStates } from '../util/load';
 
 const VoterEditor = ({
   voter,
@@ -33,8 +33,8 @@ const VoterEditor = ({
       defaultValue={voter.notes}
     />
     <Button primary type="submit">Save</Button>
-    {loadState === LoadStates.SAVED && <Message positive header="Changes saved successfully" />}
-    <Message error header="Encountered an error" content={error} />
+    {loadState === LoadStates.SAVED && <Message positive header="Changes saved successfully." />}
+    <Message error header="Encountered an error." content={error} />
   </Form>
 );
 
