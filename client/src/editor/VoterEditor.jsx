@@ -10,28 +10,29 @@ const VoterEditor = ({
   loadState,
   error,
 }) => (
-  <Form error={loadState === LoadStates.ERROR} loading={loadState === LoadStates.LOADING}>
+  <Form
+    onSubmit={submit}
+    error={loadState === LoadStates.ERROR}
+    loading={loadState === LoadStates.LOADING}
+  >
     <Form.Input
-      key={`name-${voter.uuid}`}
       label="Name:"
       defaultValue={voter.name}
       onChange={(e) => updateVoter({ name: e.target.value })}
       required
     />
     <Form.Input
-      key={`email-${voter.uuid}`}
       label="Email:"
       type="email"
       defaultValue={voter.email}
       onChange={(e) => updateVoter({ email: e.target.value })}
     />
     <Form.TextArea
-      key={`notes-${voter.uuid}`}
       label="Notes:"
       onChange={(e) => updateVoter({ notes: e.target.value })}
       defaultValue={voter.notes}
     />
-    <Button primary onClick={submit}>Save</Button>
+    <Button primary type="submit">Save</Button>
     {loadState === LoadStates.SAVED && <Message positive header="Changes saved successfully" />}
     <Message error header="Encountered an error" content={error} />
   </Form>

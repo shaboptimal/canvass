@@ -36,9 +36,14 @@ const VoterEditorContainer = () => {
 
   const submit = async () => load(upsertVoter, postUpsert, setLoadState, setError, true);
 
-  const fetchVoter = !id
-    ? () => setVoter({})
-    : () => load(async () => fetch(`/api/voters/${id}`), setVoter, setLoadState, setError);
+  const fetchVoter = () => {
+    if (!id) {
+      setVoter({});
+      setLoadState(LoadStates.IDLE);
+    } else if (id !== voter.uuid) {
+      load(() => fetch(`/api/voters/${id}`), setVoter, setLoadState, setError);
+    }
+  };
 
   useEffect(fetchVoter, [id]);
 
@@ -49,6 +54,7 @@ const VoterEditorContainer = () => {
 
   return (
     <VoterEditor
+      key={`editor-${voter.uuid}`}
       voter={voter}
       submit={submit}
       updateVoter={updateVoter}
