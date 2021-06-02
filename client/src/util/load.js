@@ -18,7 +18,7 @@ const load = async (
     }
     const jsonBody = await response.json();
     postProcess(jsonBody);
-    setLoadState(isSave ? LoadStates.SAVED : LoadStates.ID);
+    setLoadState(isSave ? LoadStates.SAVED : LoadStates.IDLE);
   } catch (e) {
     console.error(e);
     setLoadState(LoadStates.ERROR);

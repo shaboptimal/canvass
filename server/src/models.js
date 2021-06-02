@@ -1,7 +1,7 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = new Sequelize('sqlite::memory:');
 
-const Voter = sequelize.define('Voter', {
+const voterType = {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -27,8 +27,10 @@ const Voter = sequelize.define('Voter', {
     type: DataTypes.TEXT,
     allowNull: true,
   }
-});
+};
+
+const Voter = sequelize.define('Voter', voterType);
 
 const migrate = async () => sequelize.sync({ alter: true });
 
-module.exports = { migrate, Voter };
+module.exports = { migrate, Voter, voterType };

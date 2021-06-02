@@ -10,7 +10,7 @@ const VoterEditorContainer = () => {
   const [loadState, setLoadState] = useState(LoadStates.IDLE);
   const [error, setError] = useState();
 
-  const upload = () => {
+  const save = () => {
     let method = 'POST';
     let path = '/api/voters';
     if (id) {
@@ -26,14 +26,14 @@ const VoterEditorContainer = () => {
     });
   };
 
-  const onSuccessfulUpload = (upserted) => {
+  const onSaveSuccess = (upserted) => {
     setVoter(upserted);
     if (!id) {
       history.push(`/voter/${upserted.uuid}`);
     }
   };
 
-  const submit = () => load(upload, onSuccessfulUpload, setLoadState, setError, true);
+  const submit = () => load(save, onSaveSuccess, setLoadState, setError, true);
 
   const fetchVoter = () => {
     if (!id) {
