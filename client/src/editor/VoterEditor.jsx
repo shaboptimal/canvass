@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, Message } from 'semantic-ui-react';
-import LoadStates from './Enums';
+import LoadStates from '../constants/Enums';
 
 const VoterEditor = ({
   voter,
@@ -11,7 +11,6 @@ const VoterEditor = ({
   error,
 }) => (
   <Form error={loadState === LoadStates.ERROR} loading={loadState === LoadStates.LOADING}>
-    {console.log(loadState, voter)}
     <Form.Input
       key={`name-${voter.uuid}`}
       label="Name:"
@@ -22,6 +21,7 @@ const VoterEditor = ({
     <Form.Input
       key={`email-${voter.uuid}`}
       label="Email:"
+      type="email"
       defaultValue={voter.email}
       onChange={(e) => updateVoter({ email: e.target.value })}
     />

@@ -1,35 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Loader, Message } from 'semantic-ui-react';
+import LoadStates from '../constants/Enums';
 import VoterList from './VoterList';
+import load from '../util/load';
 
 const VoterListContainer = () => {
   const history = useHistory();
 
-  const [loading, setLoading] = useState(false);
+  const [loadState, setLoadState] = useState(LoadStates.IDLE);
   const [voters, setVoters] = useState([]);
   const [error, setError] = useState();
 
-  const load = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch('/api/voters');
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-      const newVoters = await response.json();
-      setVoters(newVoters);
-    } catch (e) {
-      console.error(e);
-      setError(e.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const fetchVoters = async () => load(
+    () => fetch('/api/voters'),
+    setVoters,
+    setLoadState,
+    setError,
+  );
 
-  useEffect(load, []);
+  useEffect(fetchVoters, []);
 
-  if (error) {
+  if (loadState === LoadStates.ERROR) {
     return (
       <Message negative>
         <Message.Header>Error loading voters</Message.Header>
@@ -38,7 +30,7 @@ const VoterListContainer = () => {
     );
   }
 
-  if (loading) {
+  if (loadState === LoadStates.LOADING) {
     return <Loader active>Loading</Loader>;
   }
 

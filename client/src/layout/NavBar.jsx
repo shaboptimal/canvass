@@ -1,7 +1,7 @@
 import React from 'react';
 import { Menu } from 'semantic-ui-react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
-import Paths from './Paths';
+import Paths from '../constants/Paths';
 
 const NavBar = () => {
   const history = useHistory();

@@ -9,7 +9,7 @@ const style = {
   },
   content: {
     width: '70%',
-    margin: '0 auto',
+    margin: '0.5em auto',
   },
 };
 

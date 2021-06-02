@@ -5,10 +5,10 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
-import Page from './Page';
-import Paths from './Paths';
-import VoterEditorContainer from './VoterEditorContainer';
-import VoterListContainer from './VoterListContainer';
+import Page from './layout/Page';
+import Paths from './constants/Paths';
+import VoterEditorContainer from './editor/VoterEditorContainer';
+import VoterListContainer from './list/VoterListContainer';
 
 function App() {
   return (
