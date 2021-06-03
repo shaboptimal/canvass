@@ -1,5 +1,6 @@
+const config = require('./config');
 const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = new Sequelize('sqlite::memory:');
+const sequelize = new Sequelize(config.db);
 
 const voterType = {
   id: {
@@ -11,6 +12,9 @@ const voterType = {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
     unique: true,
+    validate: {
+      isUUID: 4,
+    },
   },
   name: {
     type: DataTypes.STRING,
@@ -31,6 +35,6 @@ const voterType = {
 
 const Voter = sequelize.define('Voter', voterType);
 
-const migrate = async () => sequelize.sync({ alter: true });
+const migrate = async (options = { alter: true }) => sequelize.sync(options);
 
-module.exports = { migrate, Voter, voterType };
+module.exports = { migrate, Voter, voterType, sequelize };
