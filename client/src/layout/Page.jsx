@@ -13,6 +13,9 @@ const style = {
   },
 };
 
+/*
+ * Common layout for app pages.
+ */
 const Page = ({ children }) => (
   <div style={style.container}>
     <div style={style.content}>

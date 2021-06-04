@@ -1,3 +1,6 @@
+/**
+ * Object with functions for calling the backend API. 
+ */
 const votersApi = {
   getAll: () => fetch('/api/voters'),
   getById: (id) => fetch(`/api/voters/${id}`),
@@ -17,6 +20,9 @@ const votersApi = {
   }),
 };
 
+/*
+ * Common states that components can use to track the progress of an API call.
+ */
 const LoadStates = {
   IDLE: 'IDLE',
   LOADING: 'LOADING',
@@ -24,6 +30,20 @@ const LoadStates = {
   ERROR: 'ERROR',
 };
 
+/*
+ * Helper method to make an API call and notify the caller of its progress.
+ * 
+ * Parameters:
+ *   - callApi (function): async function implementing the actual API call.
+ *     Takes no arguments and returns a Response.
+ *   - postProcess (function): callback invoked with the JSON body of the response.
+ *   - setLoadState (function): callback invoked with a LoadStates value each time
+ *     the request state changes.
+ *   - setError (function): callback invoked with an error message in case of error.
+ *   - isSave (boolean): true iff this request is saving data, and the final success
+ *     state should be SAVED instead of IDLE.
+ * 
+ */
 const load = async (
   callApi, postProcess, setLoadState, setError, isSave,
 ) => {

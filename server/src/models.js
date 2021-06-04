@@ -2,6 +2,10 @@ const config = require('./config');
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = new Sequelize(config.db);
 
+/**
+ * Database models.
+ */
+
 const voterType = {
   id: {
     type: DataTypes.INTEGER,
@@ -35,6 +39,4 @@ const voterType = {
 
 const Voter = sequelize.define('Voter', voterType);
 
-const migrate = async (options = { alter: true }) => sequelize.sync(options);
-
-module.exports = { migrate, Voter, voterType, sequelize };
+module.exports = { Voter, voterType, sequelize };

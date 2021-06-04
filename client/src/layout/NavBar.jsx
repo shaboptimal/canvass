@@ -3,6 +3,9 @@ import { Menu } from 'semantic-ui-react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import Paths from '../constants/Paths';
 
+/*
+ * Top navigation bar.
+ */
 const NavBar = () => {
   const history = useHistory();
   const editorMatch = useRouteMatch(Paths.editor);

@@ -1,7 +1,10 @@
 const app = require('./app');
-const { migrate } = require('./models');
-const port = process.env.PORT || 5000;
+const { sequelize } = require('./models');
+const config = require('./config');
 
-migrate().then(() => {
+/*
+ * Server entry point. Perform any database migrations, then listen for requests.
+ */
+sequelize.sync({ alter: true }).then(() => {
   app.listen(port, () => console.log(`Listening on port ${port}`));
 });

@@ -4,6 +4,9 @@ import { Loader, Message } from 'semantic-ui-react';
 import VoterList from './VoterList';
 import { votersApi, load, LoadStates } from '../util/api';
 
+/*
+ * Container component controlling the voter list.
+ */
 const VoterListContainer = () => {
   const history = useHistory();
 

@@ -64,10 +64,10 @@ describe('app', () => {
 
   describe('POST /api/voters', () => {
     
-    test('Returns 200 and a voter on successful insert', async () => {
+    test('Returns 201 and a voter on successful insert', async () => {
       Voter.create = jest.fn().mockReturnValue(TEST_VOTER);
       const response = await request(app).post('/api/voters').send(TEST_VOTER);
-      expect(response.statusCode).toBe(200);
+      expect(response.statusCode).toBe(201);
       expect(response.body).toEqual(TEST_VOTER);
     });
 

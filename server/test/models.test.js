@@ -1,14 +1,14 @@
 const config = require('../src/config.js');
 config.db = 'sqlite::memory:';
 
-const { Voter, migrate } = require('models.js');
+const { Voter, sequelize } = require('models.js');
 const { ValidationError } = require('sequelize');
 const uuid = require('uuid');
 
 describe('models', () => {
 
   beforeAll(async () => {
-    await migrate();
+    await sequelize.sync({ force: true });
   });
 
   describe('Voter', () => {
