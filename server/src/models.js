@@ -1,6 +1,17 @@
 const config = require('./config');
 const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = new Sequelize(config.db);
+const options = process.env.NODE_ENV === 'production'
+  ? {
+    dialect: 'postgres',
+    ssl: true,
+    native: true,
+    dialectOptions: {
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    },
+  } : { dialect: 'sqlite' };
+const sequelize = new Sequelize(config.db, options);
 
 /**
  * Database models.

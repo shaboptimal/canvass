@@ -2,6 +2,6 @@
  * Common configuration
  */
 module.exports = {
-  db: 'sqlite://canvass.db',
+  db: process.env.DATABASE_URL || 'sqlite://canvass.db',
   port: process.env.PORT || 5000,
 };
