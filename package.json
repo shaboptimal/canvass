@@ -4,7 +4,10 @@
   "scripts": {
     "client": "cd client && npm start",
     "server": "cd server && nodemon npm start",
-    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "install-all": "concurrently \"npm install\" \"npm install --prefix client\" \"npm install --prefix server\"",
+    "start": "cd server && npm start",
+    "heroku-postbuild": "cd server && npm install && cd ../client && npm install && npm run build"
   },
   "dependencies": {
     "express": "^4.17.1",

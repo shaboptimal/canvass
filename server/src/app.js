@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const { ValidationError } = require('sequelize');
 const { Voter, sequelize } = require('./models');
 const { Parser } = require('json2csv');
@@ -7,7 +8,7 @@ const app = express();
 app.use(express.json());
 
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header("Access-Control-Allow-Origin", process.env.ALLOWED_ORIGIN || 'http://localhost:3000');
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
@@ -126,5 +127,14 @@ app.get('/api/voters/csv', async (req, res, next) => {
     const voters = await Voter.findAll({}, { transaction: txn });
   }, req, res, next, 200, headers);
 });
+
+// For production, route requests to the frontend
+if (process.env.NODE_ENV === 'production') {
+  const clientDir = `${__dirname}/../../client/build`;
+  app.use(express.static(clientDir));
+  app.get('*', function(req, res) {
+    res.sendFile(path.resolve(clientDir, 'index.html'));
+  });
+}
 
 module.exports = app;
