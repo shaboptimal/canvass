@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Loader, Message } from 'semantic-ui-react';
 import VoterList from './VoterList';
-import { load, LoadStates } from '../util/load';
+import { votersApi, load, LoadStates } from '../util/api';
 
 const VoterListContainer = () => {
   const history = useHistory();
@@ -11,14 +11,7 @@ const VoterListContainer = () => {
   const [voters, setVoters] = useState([]);
   const [error, setError] = useState();
 
-  const fetchVoters = () => load(
-    () => fetch('/api/voters'),
-    setVoters,
-    setLoadState,
-    setError,
-  );
-
-  useEffect(fetchVoters, []);
+  useEffect(() => load(votersApi.getAll, setVoters, setLoadState, setError), []);
 
   if (loadState === LoadStates.ERROR) {
     return (

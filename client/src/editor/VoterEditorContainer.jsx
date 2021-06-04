@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import VoterEditor from './VoterEditor';
-import { load, LoadStates } from '../util/load';
+import { votersApi, load, LoadStates } from '../util/api';
 
 const VoterEditorContainer = () => {
   const { id } = useParams();
@@ -10,21 +10,9 @@ const VoterEditorContainer = () => {
   const [loadState, setLoadState] = useState(LoadStates.IDLE);
   const [error, setError] = useState();
 
-  const save = () => {
-    let method = 'POST';
-    let path = '/api/voters';
-    if (id) {
-      method = 'PUT';
-      path = `${path}/${id}`;
-    }
-    return fetch(path, {
-      method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(voter),
-    });
-  };
+  const save = id
+    ? () => votersApi.put(voter)
+    : () => votersApi.post(voter);
 
   const onSaveSuccess = (upserted) => {
     setVoter(upserted);
@@ -35,16 +23,14 @@ const VoterEditorContainer = () => {
 
   const submit = () => load(save, onSaveSuccess, setLoadState, setError, true);
 
-  const fetchVoter = () => {
+  useEffect(() => {
     if (!id) {
       setVoter({});
       setLoadState(LoadStates.IDLE);
     } else if (id !== voter.uuid) {
-      load(() => fetch(`/api/voters/${id}`), setVoter, setLoadState, setError);
+      load(() => votersApi.getById(id), setVoter, setLoadState, setError);
     }
-  };
-
-  useEffect(fetchVoter, [id]);
+  }, [id]);
 
   const updateVoter = (changes) => {
     const newValue = { ...voter, ...changes };

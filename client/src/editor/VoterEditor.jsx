@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, Message } from 'semantic-ui-react';
-import { LoadStates } from '../util/load';
+import { LoadStates } from '../util/api';
 
 const VoterEditor = ({
   voter,
@@ -16,19 +16,23 @@ const VoterEditor = ({
     loading={loadState === LoadStates.LOADING}
   >
     <Form.Input
-      label="Name:"
+      id="nameInput"
+      label={{ children: 'Name:', htmlFor: 'nameInput' }}
       defaultValue={voter.name}
       onChange={(e) => updateVoter({ name: e.target.value })}
       required
     />
     <Form.Input
+      id="emailInput"
+      label={{ children: 'Email:', htmlFor: 'emailInput' }}
       label="Email:"
       type="email"
       defaultValue={voter.email}
       onChange={(e) => updateVoter({ email: e.target.value })}
     />
     <Form.TextArea
-      label="Notes:"
+      id="notesInput"
+      label={{ children: "Notes:", htmlFor: 'notesInput' }}
       onChange={(e) => updateVoter({ notes: e.target.value })}
       defaultValue={voter.notes}
     />
