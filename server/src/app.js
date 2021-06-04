@@ -1,9 +1,18 @@
 const express = require('express');
 const { ValidationError } = require('sequelize');
 const { Voter, sequelize } = require('./models');
+const { Parser } = require('json2csv');
 
 const app = express();
 app.use(express.json());
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
+const DEFAULT_HEADERS = { 'content-type': 'application/json' };
 
 /*
  * Helper function to support common CRUD endpoints. Performs an operation
@@ -21,16 +30,24 @@ app.use(express.json());
  *   - req (Request) - the request.
  *   - res (Response) - the response.
  *   - next (function) - function to pass control to the next handler.
- *   - successStatus (integer) - HTTP status to return in case of success.
+ *   - successStatus (integer) - HTTP status to return if successful.
+ *   - headers (object) - response headers to include if successful.
  * 
  */
-const handle = async (operation, req, res, next, successStatus = 200) => {
+const handle = async (
+  operation,
+  req,
+  res,
+  next,
+  successStatus = 200,
+  headers,
+  ) => {
   try {
     const result = await sequelize.transaction(async (txn) => operation(req, txn));
     if (result === null || result === undefined) {
       res.sendStatus(404);
     } else {
-      res.status(successStatus).send(result);
+      res.set({ ...DEFAULT_HEADERS, ...headers }).status(successStatus).send(result);
     }
   } catch (err) {
     console.error(err);
@@ -43,14 +60,27 @@ const handle = async (operation, req, res, next, successStatus = 200) => {
 }
 
 /*
- * Get all voters. Returns only the UUID, name, and email for each.
+ * Get all voters as JSON or CSV.
  */ 
 app.get('/api/voters', async (req, res, next) => {
   console.log(`getting names and IDs for all voters`);
-  await handle(async (req, txn) => Voter.findAll(
-    { attributes: ['uuid', 'name', 'email']},
-    { transaction: txn }),
-    req, res, next);
+  const { format = 'json', download } = req.query;
+  const headers = {};
+  if (format === 'csv') {
+    headers['content-type'] = 'text/csv';
+  }
+  if (req.query.download) {
+    headers['content-disposition'] = `attachment; filename=voters.${format}`;
+  }
+  await handle(async (req, txn) => {
+    const voters = await Voter.findAll({}, { transaction: txn });
+    if (format === 'csv') {
+      const json2csvParser = new Parser();
+      const csv = json2csvParser.parse(voters.map(v => v.toJSON()));
+      return csv;
+    }
+    return voters;
+  }, req, res, next, 200, headers);
 });
 
 /*
@@ -84,6 +114,17 @@ app.put('/api/voters/:uuid', async (req, res, next) => {
     const voter = await Voter.findOne({ where: { uuid: req.params.uuid } }, { transaction: txn });
     return voter;
   }, req, res, next);
+});
+
+/*
+ * Get all voters as CSV.
+ */ 
+app.get('/api/voters/csv', async (req, res, next) => {
+  console.log(`getting all voters as CSV`);
+  const headers = { 'content-type': 'application/csv', 'content-disposition': 'attachment' };
+  await handle(async (req, txn) => {
+    const voters = await Voter.findAll({}, { transaction: txn });
+  }, req, res, next, 200, headers);
 });
 
 module.exports = app;

@@ -7,7 +7,7 @@ import { votersApi, load, LoadStates } from '../util/api';
  * Container component to control the form for editing voter notes.
  * If the path contains an id for a particular voter, this form edits that voter,
  * otherwise it creates a new one.
- */ 
+ */
 const VoterEditorContainer = () => {
   const { id } = useParams();
   const history = useHistory();

@@ -2,7 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Loader, Message } from 'semantic-ui-react';
 import VoterList from './VoterList';
-import { votersApi, load, LoadStates } from '../util/api';
+import {
+  votersApi,
+  load,
+  LoadStates,
+  CSV_URL,
+} from '../util/api';
 
 /*
  * Container component controlling the voter list.
@@ -29,7 +34,13 @@ const VoterListContainer = () => {
     return <Loader active>Loading</Loader>;
   }
 
-  return <VoterList voters={voters} onClick={(id) => history.push(`/voter/${id}`)} />;
+  return (
+    <VoterList
+      voters={voters}
+      onClick={(id) => history.push(`/voter/${id}`)}
+      csvUrl={CSV_URL}
+    />
+  );
 };
 
 export default VoterListContainer;

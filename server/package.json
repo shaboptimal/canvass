@@ -8,6 +8,7 @@
   "dependencies": {
     "@types/sequelize": "^4.28.9",
     "express": "^4.17.1",
+    "json2csv": "^5.0.6",
     "sequelize": "^6.6.2",
     "sqlite3": "^5.0.2"
   },

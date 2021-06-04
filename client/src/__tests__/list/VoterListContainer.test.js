@@ -27,15 +27,20 @@ describe('VoterListContainer', () => {
     render(<VoterListContainer />);
     const emptyList = await screen.findByText('No voters. Click the Add Voter button to start!'); 
     expect(emptyList).toBeInTheDocument();
+    const csvButton = await screen.queryByText('Download CSV');
+    expect(csvButton).toBeFalsy();
   });
 
-  test('Renders names and emails when there are voters', async () => {
+  test('Renders names, emails, and CSV button when there are voters', async () => {
     fetch.mockResponse(JSON.stringify(VOTERS));
     render(<VoterListContainer />);
     expect(await screen.findByText(VOTERS[0].name)).toBeInTheDocument(); 
     expect(await screen.findByText(VOTERS[0].email)).toBeInTheDocument(); 
     expect(await screen.findByText(VOTERS[1].name)).toBeInTheDocument(); 
     expect(await screen.findByText(VOTERS[1].email)).toBeInTheDocument(); 
+    const csvButton = await screen.getByText('Download CSV');
+    expect(csvButton).toBeInTheDocument();
+    expect(csvButton.closest('a')).toHaveAttribute('href', 'http://localhost:5000/api/voters?format=csv&download=true');
   });
 
   test('Renders an error message when there is an error', async () => {

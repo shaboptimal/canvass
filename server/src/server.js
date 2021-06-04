@@ -1,6 +1,6 @@
 const app = require('./app');
 const { sequelize } = require('./models');
-const config = require('./config');
+const { port } = require('./config');
 
 /*
  * Server entry point. Perform any database migrations, then listen for requests.

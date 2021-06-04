@@ -18,7 +18,7 @@ describe('api', () => {
 
   describe('votersApi', () => {
     test('Calls correct endpoint for getAll', async () => {
-      fetch.mockIf(/^\/api\/voters$/, (req) => {
+      fetch.mockIf(/\/api\/voters$/, (req) => {
         if (req.method === 'GET') {
           return Promise.resolve(JSON.stringify([VOTER]));
         }
@@ -29,7 +29,7 @@ describe('api', () => {
     });
 
     test('Calls correct endpoint for getById', async () => {
-      fetch.mockIf(/^\/api\/voters\/.+$/, (req) => {
+      fetch.mockIf(/\/api\/voters\/.+$/, (req) => {
         if (req.method === 'GET' && req.url.endsWith(VOTER_ID)) {
           return Promise.resolve(JSON.stringify(VOTER));
         }
@@ -40,7 +40,7 @@ describe('api', () => {
     });
 
     test('Calls correct endpoint for post', async () => {
-      fetch.mockIf(/^\/api\/voters$/, async (req) => {
+      fetch.mockIf(/\/api\/voters$/, async (req) => {
         if (req.method === 'POST') {
           const body = await req.json();
           return Promise.resolve(JSON.stringify(body));
@@ -52,7 +52,7 @@ describe('api', () => {
     });
 
     test('Calls correct endpoint for put', async () => {
-      fetch.mockIf(/^\/api\/voters\/.+$/, async (req) => {
+      fetch.mockIf(/\/api\/voters\/.+$/, async (req) => {
         if (req.method === 'PUT' && req.url.endsWith(VOTER_ID)) {
           const body = await req.json();
           return Promise.resolve(JSON.stringify(body));
