@@ -7,7 +7,7 @@ It uses a SQLite file database, Sequelize ORM, and Semantic UI React for styling
 
 ## Running
 
-To run in development mode, execute the following from the repository root:
+canvass requires node and npm to run. To start it in development mode, execute the following from the repository root:
 
 ```
 npm run install-all

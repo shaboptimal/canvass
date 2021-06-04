@@ -1,4 +1,4 @@
-const API_PATH = `${process.env.REACT_APP_BACKEND_URL}/api/voters`;
+const API_PATH = `${process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000'}/api/voters`;
 
 /**
  * Object with functions for calling the backend API.
